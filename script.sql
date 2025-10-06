@@ -1,19 +1,55 @@
- -- EXCEPTION
+--  1.1 Resolva cada exercício a seguir usando LOOP, WHILE, FOR e FOREACH. Quando o enunciado disser que é preciso “ler” algum valor, gere-o aleatoriamente. 
+-- Faça um programa que mostre os números pares entre 1 e 100, inclusive.
+-- Entrada
+-- Neste problema extremamente simples de repetição não há entrada.
+-- Saída
+-- Imprima todos os números pares entre 1 e 100, inclusive se for o caso, um em cada linha.
+ 
+-- FOR
 DO $$
-DECLARE
-  a INT := fn_valor_aleatorio_entre(0, 2);
 BEGIN
-  IF a = 0 THEN
-    RAISE 'o divisor não pode ser zero';
-  ELSE
-    RAISE NOTICE 'Valor de a é %', a;
-  END IF;
-EXCEPTION WHEN OTHERS THEN
-  --SQLState
-  --SQLERRM
-  RAISE NOTICE 'Exceção: %, %', SQLSTATE, SQLERRM;
+  RAISE NOTICE 'Números pares entre 1 e 100:';
+  FOR i IN 1..100 LOOP
+    IF i % 2 = 0 THEN
+      RAISE NOTICE '%', i;
+    END IF;
+  END LOOP;
 END;
 $$
+
+--WHILE
+DO $$
+DECLARE
+  i INT := 1;
+BEGIN
+  RAISE NOTICE 'Números pares entre 1 e 100:';
+  WHILE i <= 100 LOOP
+    IF i % 2 = 0 THEN
+      RAISE NOTICE '%', i;
+    END IF;
+    i := i + 1;
+  END LOOP;
+END;
+$$
+
+
+
+--  -- EXCEPTION
+-- DO $$
+-- DECLARE
+--   a INT := fn_valor_aleatorio_entre(0, 2);
+-- BEGIN
+--   IF a = 0 THEN
+--     RAISE 'o divisor não pode ser zero';
+--   ELSE
+--     RAISE NOTICE 'Valor de a é %', a;
+--   END IF;
+-- EXCEPTION WHEN OTHERS THEN
+--   --SQLState
+--   --SQLERRM
+--   RAISE NOTICE 'Exceção: %, %', SQLSTATE, SQLERRM;
+-- END;
+-- $$
 
 
 -- DO $$
@@ -116,9 +152,9 @@ $$
 -- END;
 -- $$
 
-SELECT * FROM tb_aluno;
+-- SELECT * FROM tb_aluno;
 
--- CREATE TABLE tb_aluno(
+-- -- CREATE TABLE tb_aluno(
 --   cod_aluno SERIAL PRIMARY KEY,
 --   nota INT
 -- );
