@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION fn_aleatorio(lim_inferior INT, lim_superior INT)
+CREATE OR REPLACE FUNCTION fn_valor_aleatorio_entre(lim_inferior INT, lim_superior INT)
 RETURNS INT AS
 $$
 BEGIN
@@ -6,6 +6,43 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+-- 1.3 Gerar inteiros no intervalo de 20 a 50. 
+-- Leia 2 valores inteiros X e Y. A seguir, calcule e mostre a soma dos números impares entre eles.
+-- Entrada
+-- O arquivo de entrada contém dois valores inteiros.
+-- Saída
+-- O programa deve imprimir um valor inteiro. Este valor é a soma dos valores ímpares que estão entre os valores fornecidos na entrada que deverá caber em um inteiro.
+
+DO $$
+DECLARE
+  x INT := fn_valor_aleatorio_entre(20, 50);
+  y INT := fn_valor_aleatorio_entre(20, 50);
+  menor INT;
+  maior INT;
+  soma INT := 0;
+BEGIN
+  IF x > y THEN
+    menor := y;
+    maior := x;
+  ELSE
+    menor := x;
+    maior := y;
+  END IF;
+
+  RAISE NOTICE 'X = %, Y = %', x, y;
+  RAISE NOTICE 'Somando ímpares entre % e %', menor, maior;
+
+  FOR i IN menor..maior LOOP
+    IF i % 2 <> 0 THEN
+      soma := soma + i;
+    END IF;
+  END LOOP;
+
+  RAISE NOTICE 'Soma dos ímpares: %', soma;
+END;
+$$
+
+
 -- 1.2 Gerar inteiros no intervalo de -50 a 50. 
 -- Faça um programa que leia 6 valores. Estes valores serão somente negativos ou positivos (desconsidere os valores nulos). A seguir, mostre a quantidade de valores positivos digitados.
 -- Entrada
@@ -15,29 +52,29 @@ LANGUAGE plpgsql;
 -- Função para gerar número aleatório entre dois limites
 
 
-DO $$
-DECLARE
-  valores INT[] := ARRAY[
-    fn_aleatorio(-50, 50),
-    fn_aleatorio(-50, 50),
-    fn_aleatorio(-50, 50),
-    fn_aleatorio(-50, 50),
-    fn_aleatorio(-50, 50),
-    fn_aleatorio(-50, 50)
-  ];
-  v INT;
-  positivos INT := 0;
-BEGIN
-  FOREACH v IN ARRAY valores LOOP
-    RAISE NOTICE 'Valor: %', v;
-    IF v > 0 THEN
-      positivos := positivos + 1;
-    END IF;
-  END LOOP;
+-- DO $$
+-- DECLARE
+--   valores INT[] := ARRAY[
+--     fn_aleatorio(-50, 50),
+--     fn_aleatorio(-50, 50),
+--     fn_aleatorio(-50, 50),
+--     fn_aleatorio(-50, 50),
+--     fn_aleatorio(-50, 50),
+--     fn_aleatorio(-50, 50)
+--   ];
+--   v INT;
+--   positivos INT := 0;
+-- BEGIN
+--   FOREACH v IN ARRAY valores LOOP
+--     RAISE NOTICE 'Valor: %', v;
+--     IF v > 0 THEN
+--       positivos := positivos + 1;
+--     END IF;
+--   END LOOP;
 
-  RAISE NOTICE 'Quantidade de positivos: %', positivos;
-END;
-$$;
+--   RAISE NOTICE 'Quantidade de positivos: %', positivos;
+-- END;
+-- $$;
 
 
 
