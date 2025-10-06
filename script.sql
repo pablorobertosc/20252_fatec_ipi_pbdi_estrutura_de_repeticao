@@ -6,57 +6,90 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+-- 1.5 Faça um programa que calcule o determinante de uma matriz quadrada de ordem 3 utilizando a regra de Sarrus. 
+-- Veja a regra aqui: https://en.wikipedia.org/wiki/Rule_of_Sarrus Preencha a matriz com valores inteiros aleatórios no intervalo de 1 a 12.
+
+DO $$
+DECLARE
+  matriz INT[][] := ARRAY[
+    [fn_valor_aleatorio_entre(1, 12), fn_valor_aleatorio_entre(1, 12), fn_valor_aleatorio_entre(1, 12)],
+    [fn_valor_aleatorio_entre(1, 12), fn_valor_aleatorio_entre(1, 12), fn_valor_aleatorio_entre(1, 12)],
+    [fn_valor_aleatorio_entre(1, 12), fn_valor_aleatorio_entre(1, 12), fn_valor_aleatorio_entre(1, 12)]
+  ];
+  linha INT[];
+  det INT;
+BEGIN
+  RAISE NOTICE 'Matriz:';
+  FOREACH linha SLICE 1 IN ARRAY matriz LOOP
+    RAISE NOTICE '%', linha;
+  END LOOP;
+
+  det :=
+    (matriz[1][1] * matriz[2][2] * matriz[3][3]) +
+    (matriz[1][2] * matriz[2][3] * matriz[3][1]) +
+    (matriz[1][3] * matriz[2][1] * matriz[3][2]) -
+    (matriz[1][3] * matriz[2][2] * matriz[3][1]) -
+    (matriz[1][1] * matriz[2][3] * matriz[3][2]) -
+    (matriz[1][2] * matriz[2][1] * matriz[3][3]);
+
+  RAISE NOTICE 'Determinante: %', det;
+END;
+$$;
+
+
+
+
 -- 1.4 Gerar inteiros no intervalo de 1 a 100. 
 -- Leia um conjunto não determinado de pares de valores M e N (parar quando algum dos valores for menor ou igual a zero). Para cada par lido, mostre a sequência do menor até o maior e a soma dos inteiros consecutivos entre eles (incluindo o N e M).
 -- Entrada
 -- O arquivo de entrada contém um número não determinado de valores M e N. A última linha de entrada vai conter um número nulo ou negativo.
 -- Saída
 -- Para cada dupla de valores, imprima a sequência do menor até o maior e a soma deles, conforme exemplo abaixo.
-DO $$
-DECLARE
-  m INT;
-  n INT;
-  menor INT;
-  maior INT;
-  soma INT;
-  contador INT := 0;
-BEGIN
-  LOOP
-    contador := contador + 1;
-    EXIT WHEN contador > 5;  -- segurança: no máximo 5 iterações
+-- DO $$
+-- DECLARE
+--   m INT;
+--   n INT;
+--   menor INT;
+--   maior INT;
+--   soma INT;
+--   contador INT := 0;
+-- BEGIN
+--   LOOP
+--     contador := contador + 1;
+--     EXIT WHEN contador > 5;  
 
-    m := fn_aleatorio_entre(1, 100);
-    n := fn_aleatorio_entre(1, 100);
+--     m := fn_aleatorio_entre(1, 100);
+--     n := fn_aleatorio_entre(1, 100);
 
-    -- Simula condição de parada (10% de chance de encerrar)
-    IF fn_aleatorio_entre(1, 10) = 1 THEN
-      RAISE NOTICE 'Parando aleatoriamente...';
-      EXIT;
-    END IF;
+--     -- Simula condição de parada (10% de chance de encerrar)
+--     IF fn_aleatorio_entre(1, 10) = 1 THEN
+--       RAISE NOTICE 'Parando aleatoriamente...';
+--       EXIT;
+--     END IF;
 
-    IF m > n THEN
-      menor := n;
-      maior := m;
-    ELSE
-      menor := m;
-      maior := n;
-    END IF;
+--     IF m > n THEN
+--       menor := n;
+--       maior := m;
+--     ELSE
+--       menor := m;
+--       maior := n;
+--     END IF;
 
-    soma := 0;
-    RAISE NOTICE 'Sequência de % a %:', menor, maior;
+--     soma := 0;
+--     RAISE NOTICE 'Sequência de % a %:', menor, maior;
 
-    FOR i IN menor..maior LOOP
-      RAISE NOTICE '%', i;
-      soma := soma + i;
-    END LOOP;
+--     FOR i IN menor..maior LOOP
+--       RAISE NOTICE '%', i;
+--       soma := soma + i;
+--     END LOOP;
 
-    RAISE NOTICE 'Soma = %', soma;
-    RAISE NOTICE '--------------------------';
-  END LOOP;
+--     RAISE NOTICE 'Soma = %', soma;
+--     RAISE NOTICE '--------------------------';
+--   END LOOP;
 
-  RAISE NOTICE 'Encerrado.';
-END;
-$$;
+--   RAISE NOTICE 'Encerrado.';
+-- END;
+-- $$;
 
 
 
