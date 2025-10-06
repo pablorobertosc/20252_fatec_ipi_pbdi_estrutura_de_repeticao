@@ -1,3 +1,46 @@
+CREATE OR REPLACE FUNCTION fn_aleatorio(lim_inferior INT, lim_superior INT)
+RETURNS INT AS
+$$
+BEGIN
+    RETURN floor(random() * (lim_superior - lim_inferior + 1) + lim_inferior);
+END;
+$$
+LANGUAGE plpgsql;
+-- 1.2 Gerar inteiros no intervalo de -50 a 50. 
+-- Faça um programa que leia 6 valores. Estes valores serão somente negativos ou positivos (desconsidere os valores nulos). A seguir, mostre a quantidade de valores positivos digitados.
+-- Entrada
+-- Seis valores, negativos e/ou positivos.
+-- Saída
+-- Imprima uma mensagem dizendo quantos valores positivos foram lidos.
+-- Função para gerar número aleatório entre dois limites
+
+
+DO $$
+DECLARE
+  valores INT[] := ARRAY[
+    fn_aleatorio(-50, 50),
+    fn_aleatorio(-50, 50),
+    fn_aleatorio(-50, 50),
+    fn_aleatorio(-50, 50),
+    fn_aleatorio(-50, 50),
+    fn_aleatorio(-50, 50)
+  ];
+  v INT;
+  positivos INT := 0;
+BEGIN
+  FOREACH v IN ARRAY valores LOOP
+    RAISE NOTICE 'Valor: %', v;
+    IF v > 0 THEN
+      positivos := positivos + 1;
+    END IF;
+  END LOOP;
+
+  RAISE NOTICE 'Quantidade de positivos: %', positivos;
+END;
+$$;
+
+
+
 --  1.1 Resolva cada exercício a seguir usando LOOP, WHILE, FOR e FOREACH. Quando o enunciado disser que é preciso “ler” algum valor, gere-o aleatoriamente. 
 -- Faça um programa que mostre os números pares entre 1 e 100, inclusive.
 -- Entrada
@@ -5,32 +48,32 @@
 -- Saída
 -- Imprima todos os números pares entre 1 e 100, inclusive se for o caso, um em cada linha.
  
--- FOR
-DO $$
-BEGIN
-  RAISE NOTICE 'Números pares entre 1 e 100:';
-  FOR i IN 1..100 LOOP
-    IF i % 2 = 0 THEN
-      RAISE NOTICE '%', i;
-    END IF;
-  END LOOP;
-END;
-$$
+-- -- FOR
+-- DO $$
+-- BEGIN
+--   RAISE NOTICE 'Números pares entre 1 e 100:';
+--   FOR i IN 1..100 LOOP
+--     IF i % 2 = 0 THEN
+--       RAISE NOTICE '%', i;
+--     END IF;
+--   END LOOP;
+-- END;
+-- $$
 
---WHILE
-DO $$
-DECLARE
-  i INT := 1;
-BEGIN
-  RAISE NOTICE 'Números pares entre 1 e 100:';
-  WHILE i <= 100 LOOP
-    IF i % 2 = 0 THEN
-      RAISE NOTICE '%', i;
-    END IF;
-    i := i + 1;
-  END LOOP;
-END;
-$$
+-- --WHILE
+-- DO $$
+-- DECLARE
+--   i INT := 1;
+-- BEGIN
+--   RAISE NOTICE 'Números pares entre 1 e 100:';
+--   WHILE i <= 100 LOOP
+--     IF i % 2 = 0 THEN
+--       RAISE NOTICE '%', i;
+--     END IF;
+--     i := i + 1;
+--   END LOOP;
+-- END;
+-- $$
 
 
 
