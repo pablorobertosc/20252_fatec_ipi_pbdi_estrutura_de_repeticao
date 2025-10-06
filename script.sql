@@ -6,6 +6,61 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+-- 1.4 Gerar inteiros no intervalo de 1 a 100. 
+-- Leia um conjunto não determinado de pares de valores M e N (parar quando algum dos valores for menor ou igual a zero). Para cada par lido, mostre a sequência do menor até o maior e a soma dos inteiros consecutivos entre eles (incluindo o N e M).
+-- Entrada
+-- O arquivo de entrada contém um número não determinado de valores M e N. A última linha de entrada vai conter um número nulo ou negativo.
+-- Saída
+-- Para cada dupla de valores, imprima a sequência do menor até o maior e a soma deles, conforme exemplo abaixo.
+DO $$
+DECLARE
+  m INT;
+  n INT;
+  menor INT;
+  maior INT;
+  soma INT;
+  contador INT := 0;
+BEGIN
+  LOOP
+    contador := contador + 1;
+    EXIT WHEN contador > 5;  -- segurança: no máximo 5 iterações
+
+    m := fn_aleatorio_entre(1, 100);
+    n := fn_aleatorio_entre(1, 100);
+
+    -- Simula condição de parada (10% de chance de encerrar)
+    IF fn_aleatorio_entre(1, 10) = 1 THEN
+      RAISE NOTICE 'Parando aleatoriamente...';
+      EXIT;
+    END IF;
+
+    IF m > n THEN
+      menor := n;
+      maior := m;
+    ELSE
+      menor := m;
+      maior := n;
+    END IF;
+
+    soma := 0;
+    RAISE NOTICE 'Sequência de % a %:', menor, maior;
+
+    FOR i IN menor..maior LOOP
+      RAISE NOTICE '%', i;
+      soma := soma + i;
+    END LOOP;
+
+    RAISE NOTICE 'Soma = %', soma;
+    RAISE NOTICE '--------------------------';
+  END LOOP;
+
+  RAISE NOTICE 'Encerrado.';
+END;
+$$;
+
+
+
+
 -- 1.3 Gerar inteiros no intervalo de 20 a 50. 
 -- Leia 2 valores inteiros X e Y. A seguir, calcule e mostre a soma dos números impares entre eles.
 -- Entrada
@@ -13,34 +68,34 @@ LANGUAGE plpgsql;
 -- Saída
 -- O programa deve imprimir um valor inteiro. Este valor é a soma dos valores ímpares que estão entre os valores fornecidos na entrada que deverá caber em um inteiro.
 
-DO $$
-DECLARE
-  x INT := fn_valor_aleatorio_entre(20, 50);
-  y INT := fn_valor_aleatorio_entre(20, 50);
-  menor INT;
-  maior INT;
-  soma INT := 0;
-BEGIN
-  IF x > y THEN
-    menor := y;
-    maior := x;
-  ELSE
-    menor := x;
-    maior := y;
-  END IF;
+-- DO $$
+-- DECLARE
+--   x INT := fn_valor_aleatorio_entre(20, 50);
+--   y INT := fn_valor_aleatorio_entre(20, 50);
+--   menor INT;
+--   maior INT;
+--   soma INT := 0;
+-- BEGIN
+--   IF x > y THEN
+--     menor := y;
+--     maior := x;
+--   ELSE
+--     menor := x;
+--     maior := y;
+--   END IF;
 
-  RAISE NOTICE 'X = %, Y = %', x, y;
-  RAISE NOTICE 'Somando ímpares entre % e %', menor, maior;
+--   RAISE NOTICE 'X = %, Y = %', x, y;
+--   RAISE NOTICE 'Somando ímpares entre % e %', menor, maior;
 
-  FOR i IN menor..maior LOOP
-    IF i % 2 <> 0 THEN
-      soma := soma + i;
-    END IF;
-  END LOOP;
+--   FOR i IN menor..maior LOOP
+--     IF i % 2 <> 0 THEN
+--       soma := soma + i;
+--     END IF;
+--   END LOOP;
 
-  RAISE NOTICE 'Soma dos ímpares: %', soma;
-END;
-$$
+--   RAISE NOTICE 'Soma dos ímpares: %', soma;
+-- END;
+-- $$
 
 
 -- 1.2 Gerar inteiros no intervalo de -50 a 50. 
